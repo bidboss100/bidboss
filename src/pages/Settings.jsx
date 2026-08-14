@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Key, Building, Shield, Save, Eye, EyeOff, CheckCircle } from 'lucide-react'
-import { Card, Btn, PageHeader } from '../components/UI'
+import { Key, Building, Shield, Save, Eye, EyeOff, CheckCircle, Globe } from 'lucide-react'
+import { Card, Btn, Badge, PageHeader } from '../components/UI'
 
 export default function Settings() {
   const [apiKey, setApiKey] = useState('')
@@ -11,7 +11,10 @@ export default function Settings() {
     name: '', cage: '', uei: '', duns: '', address: '', phone: '', email: '',
   })
 
-  const [naics, setNaics] = useState(['561730', '561720', '812111', '446110', '446199'])
+  const [naics, setNaics] = useState([
+    '561730', '561720', '812111', '446110', '446199',
+    '561210', '561110', '238910',
+  ])
   const [newNaics, setNewNaics] = useState('')
 
   const [setAsides, setSetAsides] = useState({
@@ -73,6 +76,39 @@ export default function Settings() {
             <CheckCircle size={11} /> API key stored. Live SAM.gov search enabled.
           </p>
         )}
+      </Section>
+
+      {/* Data Sources */}
+      <Section icon={Globe} title="Data Sources">
+        <p style={{ fontSize: '0.68rem', color: '#8892A4', marginBottom: '0.75rem', lineHeight: 1.6 }}>
+          Opportunity sources feeding your Opportunities page.
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#111D35', border: '1px solid #1E2D4A', borderRadius: '6px', padding: '0.75rem 1rem' }}>
+            <div>
+              <p style={{ fontSize: '0.75rem', color: '#E8EAF0' }}>Federal — SAM.gov</p>
+              <p style={{ fontSize: '0.62rem', color: '#8892A4', marginTop: '2px' }}>Enabled via API key above</p>
+            </div>
+            <Badge text="ACTIVE" color="#3B82F6" />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#111D35', border: '1px solid #1E2D4A', borderRadius: '6px', padding: '0.75rem 1rem' }}>
+            <div>
+              <p style={{ fontSize: '0.75rem', color: '#E8EAF0' }}>
+                State & Local — Texas SmartBuy{' '}
+                <a href="https://www.txsmartbuy.gov" target="_blank" rel="noreferrer" style={{ color: '#22D3EE', fontSize: '0.62rem' }}>(txsmartbuy.gov)</a>
+              </p>
+              <p style={{ fontSize: '0.62rem', color: '#8892A4', marginTop: '2px' }}>Plus manually-added county, city, and school-district postings</p>
+            </div>
+            <Badge text="ACTIVE" color="#22D3EE" />
+          </div>
+        </div>
+        <p style={{ fontSize: '0.62rem', color: '#5A6A80', marginTop: '0.85rem', lineHeight: 1.6 }}>
+          Texas SmartBuy and most county/city/school-district portals don't expose a public API, so listings from them
+          are added manually — go to the <strong style={{ color: '#8892A4' }}>Opportunities</strong> page and click{' '}
+          <strong style={{ color: '#8892A4' }}>+ Add State/Local Opportunity</strong> to paste one in. Supported portals:
+          Texas SmartBuy, Tarrant County Purchasing, City of Fort Worth Purchasing, City of Dallas Purchasing, Dallas ISD
+          (and other school districts), TxDOT, and any other Texas city or county.
+        </p>
       </Section>
 
       {/* Company Profile */}

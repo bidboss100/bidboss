@@ -93,6 +93,11 @@ export function PageHeader({ title, sub }) {
   )
 }
 
+export function SourceBadge({ source }) {
+  const color = source === 'State/Local' ? '#22D3EE' : '#3B82F6'
+  return <Badge text={source === 'State/Local' ? 'STATE/LOCAL' : 'FEDERAL'} color={color} />
+}
+
 export function StageBadge({ stage }) {
   const colors = {
     'Identified': '#8892A4',

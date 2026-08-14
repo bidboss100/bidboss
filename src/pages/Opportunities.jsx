@@ -1,19 +1,36 @@
 import { useState } from 'react'
-import { opportunities as initialOpps, NAICS_LIST, SET_ASIDES, STAGES, STAGE_COLORS, fmt } from '../data/sampleData'
+import {
+  opportunities as initialOpps, stateLocalOpportunities as initialStateLocal,
+  NAICS_LIST, SET_ASIDES, STAGES, STAGE_COLORS, STATE_LOCAL_PORTALS, fmt,
+} from '../data/sampleData'
 import { Search, MapPin, Calendar, ExternalLink, Plus } from 'lucide-react'
-import { Badge, ScoreBadge, StageBadge, Btn, PageHeader } from '../components/UI'
+import { Badge, ScoreBadge, StageBadge, SourceBadge, Btn, PageHeader } from '../components/UI'
 
 const SET_ASIDE_COLORS = {
   'SB': '#3B82F6', 'SDVOSB': '#4CAF50', 'VOSB': '#22D3EE',
   '8(a)': '#F5A623', 'WOSB': '#EC4899', 'HUBZone': '#8B5CF6',
 }
 
+const SOURCE_FILTERS = ['All', 'Federal', 'State/Local']
+
+const emptyManualEntry = {
+  title: '', portal: STATE_LOCAL_PORTALS[0].name, customPortal: '',
+  solicitation: '', naics: NAICS_LIST[0].code, value: '', dueDate: '',
+  location: '', description: '', link: '',
+}
+
 export default function Opportunities() {
-  const [opps, setOpps] = useState(initialOpps)
+  const [opps, setOpps] = useState([
+    ...initialOpps.map(o => ({ ...o, source: o.source || 'Federal' })),
+    ...initialStateLocal,
+  ])
   const [search, setSearch] = useState('')
   const [naicsFilter, setNaicsFilter] = useState('All')
   const [setAsideFilter, setSetAsideFilter] = useState('All')
+  const [sourceFilter, setSourceFilter] = useState('All')
   const [drafting, setDrafting] = useState(null)
+  const [adding, setAdding] = useState(false)
+  const [manualEntry, setManualEntry] = useState(emptyManualEntry)
 
   const daysUntil = (d) => {
     const diff = new Date(d) - new Date()
@@ -25,7 +42,8 @@ export default function Opportunities() {
     const matchSearch = !q || o.title.toLowerCase().includes(q) || o.agency.toLowerCase().includes(q) || o.solicitation.toLowerCase().includes(q)
     const matchNaics = naicsFilter === 'All' || o.naics === naicsFilter
     const matchSetAside = setAsideFilter === 'All' || o.setAside === setAsideFilter
-    return matchSearch && matchNaics && matchSetAside
+    const matchSource = sourceFilter === 'All' || o.source === sourceFilter
+    return matchSearch && matchNaics && matchSetAside && matchSource
   })
 
   const advanceStage = (id) => {
@@ -36,12 +54,49 @@ export default function Opportunities() {
     }))
   }
 
+  const submitManualEntry = () => {
+    if (!manualEntry.title.trim()) return
+    const naicsMeta = NAICS_LIST.find(n => n.code === manualEntry.naics)
+    const portalName = manualEntry.portal === 'Other Texas City / County'
+      ? (manualEntry.customPortal.trim() || 'Other Texas City / County')
+      : manualEntry.portal
+    const portalMeta = STATE_LOCAL_PORTALS.find(p => p.name === manualEntry.portal)
+
+    setOpps(prev => ([
+      ...prev,
+      {
+        id: Date.now(),
+        solicitation: manualEntry.solicitation.trim() || 'MANUAL ENTRY',
+        title: manualEntry.title.trim(),
+        agency: portalName,
+        office: portalName,
+        naics: manualEntry.naics,
+        naicsTitle: naicsMeta ? naicsMeta.label : '',
+        setAside: null,
+        value: Number(manualEntry.value) || 0,
+        type: 'FFP',
+        postedDate: new Date().toISOString().slice(0, 10),
+        dueDate: manualEntry.dueDate || new Date().toISOString().slice(0, 10),
+        location: manualEntry.location.trim() || 'TX',
+        aiScore: null,
+        status: 'Open',
+        description: manualEntry.description.trim() || 'Manually added state/local opportunity.',
+        stage: 'Identified',
+        source: 'State/Local',
+        sourceName: portalName,
+        sourceUrl: manualEntry.link.trim() || (portalMeta ? portalMeta.url : ''),
+      },
+    ]))
+    setManualEntry(emptyManualEntry)
+    setAdding(false)
+  }
+
   return (
     <div>
-      <PageHeader title="OPPORTUNITIES" sub="SAM.gov federal contract opportunities · Live pipeline tracking" />
+      <PageHeader title="OPPORTUNITIES" sub="SAM.gov federal + Texas state/local contract opportunities · Live pipeline tracking" />
 
       {/* Filters */}
-      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.85rem', flexWrap: 'wrap', alignItems: 'center' }}>
         <div style={{ position: 'relative', flex: '1', minWidth: '200px' }}>
           <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#8892A4' }} />
           <input
@@ -62,15 +117,45 @@ export default function Opportunities() {
         <span style={{ fontSize: '0.7rem', color: '#8892A4', whiteSpace: 'nowrap' }}>{filtered.length} result{filtered.length !== 1 ? 's' : ''}</span>
       </div>
 
+      {/* Source toggle + manual entry */}
+      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', gap: '0.4rem', background: '#0D1526', border: '1px solid #1E2D4A', borderRadius: '7px', padding: '3px' }}>
+          {SOURCE_FILTERS.map(s => (
+            <button
+              key={s}
+              onClick={() => setSourceFilter(s)}
+              style={{
+                fontFamily: 'DM Mono',
+                fontSize: '0.68rem',
+                padding: '5px 12px',
+                borderRadius: '5px',
+                border: 'none',
+                cursor: 'pointer',
+                background: sourceFilter === s ? '#F5A623' : 'transparent',
+                color: sourceFilter === s ? '#080D18' : '#8892A4',
+                transition: 'background 0.15s, color 0.15s',
+              }}
+            >
+              {s === 'All' ? 'All Sources' : s === 'Federal' ? 'Federal Only' : 'State/Local Only'}
+            </button>
+          ))}
+        </div>
+        <Btn variant="outline" onClick={() => setAdding(true)}>
+          <Plus size={12} style={{ display: 'inline', verticalAlign: '-2px', marginRight: '4px' }} /> Add State/Local Opportunity
+        </Btn>
+      </div>
+
       {/* Cards grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1rem' }}>
         {filtered.map(opp => {
           const days = daysUntil(opp.dueDate)
           const urgentColor = days <= 7 ? '#EF4444' : days <= 14 ? '#F59E0B' : '#8892A4'
+          const sourceColor = opp.source === 'State/Local' ? '#22D3EE' : '#3B82F6'
           return (
             <div key={opp.id} style={{
               background: '#0D1526',
               border: '1px solid #1E2D4A',
+              borderLeft: `3px solid ${sourceColor}`,
               borderRadius: '10px',
               padding: '1.1rem',
               display: 'flex',
@@ -79,12 +164,15 @@ export default function Opportunities() {
               transition: 'border-color 0.15s',
             }}
               onMouseEnter={e => e.currentTarget.style.borderColor = '#F5A62355'}
-              onMouseLeave={e => e.currentTarget.style.borderColor = '#1E2D4A'}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = '#1E2D4A'; e.currentTarget.style.borderLeftColor = sourceColor }}
             >
-              {/* Top row: solicitation + score */}
+              {/* Top row: source + solicitation + score */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <span style={{ fontSize: '0.62rem', color: '#8892A4', fontFamily: 'DM Mono' }}>{opp.solicitation}</span>
-                <ScoreBadge score={opp.aiScore} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <SourceBadge source={opp.source} />
+                  <span style={{ fontSize: '0.62rem', color: '#8892A4', fontFamily: 'DM Mono' }}>{opp.solicitation}</span>
+                </div>
+                {opp.aiScore != null ? <ScoreBadge score={opp.aiScore} /> : <Badge text="MANUAL" color="#8892A4" />}
               </div>
 
               {/* Title */}
@@ -93,7 +181,14 @@ export default function Opportunities() {
               </h3>
 
               {/* Agency */}
-              <p style={{ fontSize: '0.68rem', color: '#8892A4' }}>{opp.agency}</p>
+              <p style={{ fontSize: '0.68rem', color: '#8892A4' }}>
+                {opp.agency}
+                {opp.sourceUrl && (
+                  <a href={opp.sourceUrl} target="_blank" rel="noreferrer" style={{ color: sourceColor, marginLeft: '6px' }}>
+                    <ExternalLink size={10} style={{ display: 'inline', verticalAlign: '-1px' }} />
+                  </a>
+                )}
+              </p>
 
               {/* Value */}
               <p style={{ fontFamily: 'Bebas Neue', fontSize: '1.75rem', color: '#4CAF50', lineHeight: 1 }}>{fmt(opp.value)}</p>
@@ -102,7 +197,7 @@ export default function Opportunities() {
               <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                 <Badge text={opp.naics} color="#3B82F6" />
                 <Badge text={opp.naicsTitle} color="#3B82F6" />
-                <Badge text={opp.setAside} color={SET_ASIDE_COLORS[opp.setAside] || '#8892A4'} />
+                {opp.setAside && <Badge text={opp.setAside} color={SET_ASIDE_COLORS[opp.setAside] || '#8892A4'} />}
                 <Badge text={opp.type} color="#8892A4" />
               </div>
 
@@ -171,6 +266,148 @@ export default function Opportunities() {
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
               <Btn variant="ghost" onClick={() => setDrafting(null)}>Close</Btn>
               <Btn variant="gold" onClick={() => { alert('Proposal draft copied to clipboard!'); setDrafting(null) }}>Copy Draft</Btn>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add State/Local Opportunity Modal */}
+      {adding && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', zIndex: 50,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }} onClick={() => setAdding(false)}>
+          <div style={{
+            background: '#0D1526', border: '1px solid #22D3EE55', borderRadius: '12px',
+            padding: '2rem', width: '560px', maxWidth: '95vw', maxHeight: '85vh', overflowY: 'auto',
+          }} onClick={e => e.stopPropagation()}>
+            <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '1.6rem', color: '#22D3EE', marginBottom: '0.25rem' }}>
+              ADD STATE/LOCAL OPPORTUNITY
+            </h2>
+            <p style={{ fontSize: '0.7rem', color: '#8892A4', marginBottom: '1.25rem' }}>
+              Paste in a contract you found on Texas SmartBuy, a county, city, school district, or TxDOT portal.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              <div>
+                <label style={{ fontSize: '0.62rem', color: '#8892A4', display: 'block', marginBottom: '4px' }}>Title *</label>
+                <input
+                  value={manualEntry.title}
+                  onChange={e => setManualEntry(p => ({ ...p, title: e.target.value }))}
+                  placeholder="e.g. County Facilities Landscaping Maintenance"
+                  style={{ width: '100%' }}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                <div>
+                  <label style={{ fontSize: '0.62rem', color: '#8892A4', display: 'block', marginBottom: '4px' }}>Source Portal</label>
+                  <select
+                    value={manualEntry.portal}
+                    onChange={e => setManualEntry(p => ({ ...p, portal: e.target.value }))}
+                    style={{ width: '100%' }}
+                  >
+                    {STATE_LOCAL_PORTALS.map(p => <option key={p.name} value={p.name}>{p.name}</option>)}
+                  </select>
+                </div>
+                {manualEntry.portal === 'Other Texas City / County' && (
+                  <div>
+                    <label style={{ fontSize: '0.62rem', color: '#8892A4', display: 'block', marginBottom: '4px' }}>Entity Name</label>
+                    <input
+                      value={manualEntry.customPortal}
+                      onChange={e => setManualEntry(p => ({ ...p, customPortal: e.target.value }))}
+                      placeholder="e.g. City of Arlington Purchasing"
+                      style={{ width: '100%' }}
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                <div>
+                  <label style={{ fontSize: '0.62rem', color: '#8892A4', display: 'block', marginBottom: '4px' }}>Solicitation / Ref #</label>
+                  <input
+                    value={manualEntry.solicitation}
+                    onChange={e => setManualEntry(p => ({ ...p, solicitation: e.target.value }))}
+                    placeholder="Optional"
+                    style={{ width: '100%' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.62rem', color: '#8892A4', display: 'block', marginBottom: '4px' }}>NAICS Code</label>
+                  <select
+                    value={manualEntry.naics}
+                    onChange={e => setManualEntry(p => ({ ...p, naics: e.target.value }))}
+                    style={{ width: '100%' }}
+                  >
+                    {NAICS_LIST.map(n => <option key={n.code} value={n.code}>{n.code} — {n.label}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                <div>
+                  <label style={{ fontSize: '0.62rem', color: '#8892A4', display: 'block', marginBottom: '4px' }}>Estimated Value ($)</label>
+                  <input
+                    type="number"
+                    value={manualEntry.value}
+                    onChange={e => setManualEntry(p => ({ ...p, value: e.target.value }))}
+                    placeholder="e.g. 640000"
+                    style={{ width: '100%' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.62rem', color: '#8892A4', display: 'block', marginBottom: '4px' }}>Due Date</label>
+                  <input
+                    type="date"
+                    value={manualEntry.dueDate}
+                    onChange={e => setManualEntry(p => ({ ...p, dueDate: e.target.value }))}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ fontSize: '0.62rem', color: '#8892A4', display: 'block', marginBottom: '4px' }}>Location</label>
+                <input
+                  value={manualEntry.location}
+                  onChange={e => setManualEntry(p => ({ ...p, location: e.target.value }))}
+                  placeholder="e.g. Fort Worth, TX"
+                  style={{ width: '100%' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '0.62rem', color: '#8892A4', display: 'block', marginBottom: '4px' }}>Link to Posting</label>
+                <input
+                  value={manualEntry.link}
+                  onChange={e => setManualEntry(p => ({ ...p, link: e.target.value }))}
+                  placeholder="https://..."
+                  style={{ width: '100%' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '0.62rem', color: '#8892A4', display: 'block', marginBottom: '4px' }}>Description</label>
+                <textarea
+                  value={manualEntry.description}
+                  onChange={e => setManualEntry(p => ({ ...p, description: e.target.value }))}
+                  placeholder="Paste scope details from the posting..."
+                  rows={3}
+                  style={{ width: '100%', fontFamily: 'inherit', resize: 'vertical' }}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
+              <Btn variant="ghost" onClick={() => { setAdding(false); setManualEntry(emptyManualEntry) }}>Cancel</Btn>
+              <Btn
+                variant="gold"
+                onClick={submitManualEntry}
+                style={!manualEntry.title.trim() ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+              >
+                Add Opportunity
+              </Btn>
             </div>
           </div>
         </div>
