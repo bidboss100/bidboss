@@ -24,16 +24,16 @@ export default function Sidebar() {
       height: '100vh',
       position: 'sticky',
       top: 0,
-      background: '#0A1020',
-      borderRight: '1px solid #1E2D4A',
+      background: '#FFFFFF',
+      borderRight: '1px solid #E2E7F0',
       display: 'flex',
       flexDirection: 'column',
     }}>
-      <div style={{ padding: '1.5rem 1.25rem 1.25rem', borderBottom: '1px solid #1E2D4A' }}>
+      <div style={{ padding: '1.5rem 1.25rem 1.25rem', borderBottom: '1px solid #E2E7F0' }}>
         <div style={{ fontFamily: 'Bebas Neue', fontSize: '2rem', color: '#F5A623', letterSpacing: '0.12em', lineHeight: 1 }}>
           BID BOSS
         </div>
-        <div style={{ fontSize: '0.58rem', color: '#4A5A70', marginTop: '3px', letterSpacing: '0.1em' }}>
+        <div style={{ fontSize: '0.58rem', color: '#94A3B8', marginTop: '3px', letterSpacing: '0.1em' }}>
           FEDERAL CONTRACTING PLATFORM
         </div>
       </div>
@@ -49,9 +49,10 @@ export default function Sidebar() {
             borderRadius: '6px',
             textDecoration: 'none',
             fontSize: '0.75rem',
-            color: isActive ? '#F5A623' : '#6B7A90',
-            background: isActive ? 'rgba(245,166,35,0.08)' : 'transparent',
+            color: isActive ? '#B45309' : '#64748B',
+            background: isActive ? 'rgba(245,166,35,0.12)' : 'transparent',
             borderLeft: `2px solid ${isActive ? '#F5A623' : 'transparent'}`,
+            fontWeight: isActive ? 500 : 400,
             transition: 'all 0.12s',
           })}>
             <Icon size={15} />
@@ -60,8 +61,8 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div style={{ padding: '0.75rem 1.25rem', borderTop: '1px solid #1E2D4A' }}>
-        <div style={{ fontSize: '0.58rem', color: '#2A3A50' }}>v1.0.0 · SAM.gov Ready</div>
+      <div style={{ padding: '0.75rem 1.25rem', borderTop: '1px solid #E2E7F0' }}>
+        <div style={{ fontSize: '0.58rem', color: '#94A3B8' }}>v1.0.0 · SAM.gov Ready</div>
       </div>
     </aside>
   )

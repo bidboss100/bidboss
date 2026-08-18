@@ -35,27 +35,28 @@ export default function GovConTools() {
       {/* Quick Links */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', marginBottom: '1.5rem' }}>
         {[
-          { label: 'SAM.gov', sub: 'Opportunities & registrations', icon: Search, href: 'https://sam.gov', color: '#3B82F6' },
-          { label: 'USASpending.gov', sub: 'Federal spending data', icon: Building, href: 'https://usaspending.gov', color: '#4CAF50' },
-          { label: 'SBA Size Standards', sub: 'NAICS size table', icon: Shield, href: 'https://www.sba.gov/document/support-table-size-standards', color: '#F5A623' },
-          { label: 'beta.SAM.gov', sub: 'Wage determinations (SCA)', icon: FileCheck, href: 'https://sam.gov/search/?index=wd', color: '#8B5CF6' },
+          { label: 'SAM.gov', sub: 'Opportunities & registrations', icon: Search, href: 'https://sam.gov', color: '#2563EB' },
+          { label: 'USASpending.gov', sub: 'Federal spending data', icon: Building, href: 'https://usaspending.gov', color: '#15803D' },
+          { label: 'SBA Size Standards', sub: 'NAICS size table', icon: Shield, href: 'https://www.sba.gov/document/support-table-size-standards', color: '#B45309' },
+          { label: 'beta.SAM.gov', sub: 'Wage determinations (SCA)', icon: FileCheck, href: 'https://sam.gov/search/?index=wd', color: '#7C3AED' },
         ].map(({ label, sub, icon: Icon, href, color }) => (
           <a key={label} href={href} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
             <div style={{
-              background: '#0D1526', border: '1px solid #1E2D4A', borderRadius: '10px', padding: '1rem',
+              background: '#FFFFFF', border: '1px solid #E2E7F0', borderRadius: '10px', padding: '1rem',
               display: 'flex', alignItems: 'center', gap: '0.75rem', transition: 'border-color 0.15s',
+              boxShadow: '0 1px 2px rgba(16,24,40,0.04)',
             }}
               onMouseEnter={e => e.currentTarget.style.borderColor = color + '66'}
-              onMouseLeave={e => e.currentTarget.style.borderColor = '#1E2D4A'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = '#E2E7F0'}
             >
               <div style={{ background: color + '20', borderRadius: '8px', padding: '0.5rem' }}>
                 <Icon size={18} color={color} />
               </div>
               <div>
-                <p style={{ fontSize: '0.78rem', color: '#E8EAF0' }}>{label}</p>
-                <p style={{ fontSize: '0.62rem', color: '#8892A4' }}>{sub}</p>
+                <p style={{ fontSize: '0.78rem', color: '#0F172A' }}>{label}</p>
+                <p style={{ fontSize: '0.62rem', color: '#64748B' }}>{sub}</p>
               </div>
-              <ExternalLink size={12} color="#8892A4" style={{ marginLeft: 'auto' }} />
+              <ExternalLink size={12} color="#64748B" style={{ marginLeft: 'auto' }} />
             </div>
           </a>
         ))}
@@ -66,12 +67,12 @@ export default function GovConTools() {
         <Card title="Set-Aside Codes Quick Reference">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             {SET_ASIDES.map(({ code, label, desc }) => (
-              <div key={code} style={{ background: '#111D35', borderRadius: '6px', padding: '0.75rem' }}>
+              <div key={code} style={{ background: '#F1F4F9', borderRadius: '6px', padding: '0.75rem' }}>
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '3px' }}>
-                  <span style={{ fontFamily: 'Bebas Neue', fontSize: '0.9rem', color: '#F5A623' }}>{code}</span>
-                  <span style={{ fontSize: '0.68rem', color: '#E8EAF0' }}>{label}</span>
+                  <span style={{ fontFamily: 'Bebas Neue', fontSize: '0.9rem', color: '#B45309' }}>{code}</span>
+                  <span style={{ fontSize: '0.68rem', color: '#0F172A' }}>{label}</span>
                 </div>
-                <p style={{ fontSize: '0.62rem', color: '#8892A4', lineHeight: 1.5 }}>{desc}</p>
+                <p style={{ fontSize: '0.62rem', color: '#64748B', lineHeight: 1.5 }}>{desc}</p>
               </div>
             ))}
           </div>
@@ -81,19 +82,19 @@ export default function GovConTools() {
         <Card title="Contract Types Reference">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             {CONTRACT_TYPES.map(({ type, label, risk, desc }) => (
-              <div key={type} style={{ background: '#111D35', borderRadius: '6px', padding: '0.75rem' }}>
+              <div key={type} style={{ background: '#F1F4F9', borderRadius: '6px', padding: '0.75rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
                   <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                    <span style={{ fontFamily: 'Bebas Neue', fontSize: '0.9rem', color: '#3B82F6' }}>{type}</span>
-                    <span style={{ fontSize: '0.68rem', color: '#E8EAF0' }}>{label}</span>
+                    <span style={{ fontFamily: 'Bebas Neue', fontSize: '0.9rem', color: '#2563EB' }}>{type}</span>
+                    <span style={{ fontSize: '0.68rem', color: '#0F172A' }}>{label}</span>
                   </div>
                   <span style={{
                     fontSize: '0.58rem', padding: '1px 6px', borderRadius: '3px',
-                    color: risk === 'Contractor' ? '#EF4444' : risk === 'Government' ? '#4CAF50' : '#F59E0B',
-                    border: `1px solid ${risk === 'Contractor' ? '#EF4444' : risk === 'Government' ? '#4CAF50' : '#F59E0B'}`,
+                    color: risk === 'Contractor' ? '#DC2626' : risk === 'Government' ? '#15803D' : '#B45309',
+                    border: `1px solid ${risk === 'Contractor' ? '#DC2626' : risk === 'Government' ? '#15803D' : '#B45309'}`,
                   }}>Risk: {risk}</span>
                 </div>
-                <p style={{ fontSize: '0.62rem', color: '#8892A4', lineHeight: 1.5 }}>{desc}</p>
+                <p style={{ fontSize: '0.62rem', color: '#64748B', lineHeight: 1.5 }}>{desc}</p>
               </div>
             ))}
           </div>
@@ -104,19 +105,19 @@ export default function GovConTools() {
       <Card title="NAICS Code Reference — Your Portfolio">
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.72rem' }}>
           <thead>
-            <tr style={{ borderBottom: '1px solid #1E2D4A' }}>
+            <tr style={{ borderBottom: '1px solid #E2E7F0' }}>
               {['NAICS', 'Description', 'SBA Size Standard', 'Notes'].map(h => (
-                <th key={h} style={{ textAlign: 'left', padding: '0.5rem 0.75rem', color: '#8892A4', fontWeight: 400, fontSize: '0.65rem' }}>{h}</th>
+                <th key={h} style={{ textAlign: 'left', padding: '0.5rem 0.75rem', color: '#64748B', fontWeight: 400, fontSize: '0.65rem' }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {NAICS_REF.map(({ code, label, size, notes }, i) => (
-              <tr key={code} style={{ borderBottom: i < NAICS_REF.length - 1 ? '1px solid #111D35' : 'none' }}>
-                <td style={{ padding: '0.65rem 0.75rem', color: '#F5A623', fontFamily: 'Bebas Neue', fontSize: '1rem' }}>{code}</td>
-                <td style={{ padding: '0.65rem 0.75rem', color: '#E8EAF0' }}>{label}</td>
-                <td style={{ padding: '0.65rem 0.75rem', color: '#4CAF50', whiteSpace: 'nowrap' }}>{size}</td>
-                <td style={{ padding: '0.65rem 0.75rem', color: '#8892A4' }}>{notes}</td>
+              <tr key={code} style={{ borderBottom: i < NAICS_REF.length - 1 ? '1px solid #F1F4F9' : 'none' }}>
+                <td style={{ padding: '0.65rem 0.75rem', color: '#B45309', fontFamily: 'Bebas Neue', fontSize: '1rem' }}>{code}</td>
+                <td style={{ padding: '0.65rem 0.75rem', color: '#0F172A' }}>{label}</td>
+                <td style={{ padding: '0.65rem 0.75rem', color: '#15803D', whiteSpace: 'nowrap' }}>{size}</td>
+                <td style={{ padding: '0.65rem 0.75rem', color: '#64748B' }}>{notes}</td>
               </tr>
             ))}
           </tbody>
@@ -128,20 +129,20 @@ export default function GovConTools() {
         <Card title="SAM.gov Compliance Checklist">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
             {[
-              { item: 'Active SAM.gov Registration', status: 'Required', color: '#EF4444' },
-              { item: 'UEI Number Assigned', status: 'Required', color: '#EF4444' },
-              { item: 'CAGE Code Verified', status: 'Required', color: '#EF4444' },
-              { item: 'Representations & Certifications', status: 'Required', color: '#EF4444' },
-              { item: 'Small Business Self-Cert', status: 'If applicable', color: '#F59E0B' },
-              { item: 'SDVOSB CVE Verified', status: 'If applicable', color: '#F59E0B' },
-              { item: '8(a) SBA Certification', status: 'If applicable', color: '#F59E0B' },
-              { item: 'WOSB Certification', status: 'If applicable', color: '#F59E0B' },
-              { item: 'Past Performance References', status: 'Highly recommended', color: '#4CAF50' },
+              { item: 'Active SAM.gov Registration', status: 'Required', color: '#DC2626' },
+              { item: 'UEI Number Assigned', status: 'Required', color: '#DC2626' },
+              { item: 'CAGE Code Verified', status: 'Required', color: '#DC2626' },
+              { item: 'Representations & Certifications', status: 'Required', color: '#DC2626' },
+              { item: 'Small Business Self-Cert', status: 'If applicable', color: '#B45309' },
+              { item: 'SDVOSB CVE Verified', status: 'If applicable', color: '#B45309' },
+              { item: '8(a) SBA Certification', status: 'If applicable', color: '#B45309' },
+              { item: 'WOSB Certification', status: 'If applicable', color: '#B45309' },
+              { item: 'Past Performance References', status: 'Highly recommended', color: '#15803D' },
             ].map(({ item, status, color }) => (
               <div key={item} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
                 <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: color, marginTop: '5px', flexShrink: 0 }} />
                 <div>
-                  <p style={{ fontSize: '0.72rem', color: '#E8EAF0' }}>{item}</p>
+                  <p style={{ fontSize: '0.72rem', color: '#0F172A' }}>{item}</p>
                   <p style={{ fontSize: '0.6rem', color }}>{status}</p>
                 </div>
               </div>

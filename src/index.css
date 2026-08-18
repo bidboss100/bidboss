@@ -1,23 +1,23 @@
 :root {
-  --bg-primary: #080D18;
-  --bg-secondary: #0D1526;
-  --bg-tertiary: #111D35;
+  --bg-page: #F7F8FA;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F1F4F9;
   --gold: #F5A623;
   --gold-dim: rgba(245,166,35,0.12);
-  --green: #4CAF50;
-  --red: #EF4444;
-  --blue: #3B82F6;
-  --purple: #8B5CF6;
-  --amber: #F59E0B;
-  --text-primary: #E8EAF0;
-  --text-secondary: #8892A4;
-  --border: #1E2D4A;
+  --green: #15803D;
+  --red: #DC2626;
+  --blue: #2563EB;
+  --purple: #7C3AED;
+  --amber: #B45309;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --border: #E2E7F0;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background: var(--bg-primary);
+  background: var(--bg-page);
   color: var(--text-primary);
   font-family: 'DM Mono', monospace;
   font-size: 14px;
@@ -28,7 +28,7 @@ h1, h2, h3 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; }
 
 input, select, textarea {
   font-family: 'DM Mono', monospace;
-  background: var(--bg-tertiary);
+  background: var(--bg-surface);
   border: 1px solid var(--border);
   color: var(--text-primary);
   border-radius: 6px;
@@ -39,12 +39,12 @@ input, select, textarea {
   width: 100%;
 }
 input:focus, select:focus, textarea:focus { border-color: var(--gold); }
-select option { background: #111D35; }
+select option { background: #FFFFFF; }
 
 button { cursor: pointer; font-family: 'DM Mono', monospace; }
 
 #root { display: flex; min-height: 100vh; }
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-track { background: var(--bg-page); }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }

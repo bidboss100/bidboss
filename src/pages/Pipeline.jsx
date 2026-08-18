@@ -30,7 +30,7 @@ export default function Pipeline() {
             <div key={stage} style={{ minWidth: '240px', width: '240px', flexShrink: 0 }}>
               {/* Column header */}
               <div style={{
-                background: '#0D1526', borderRadius: '8px 8px 0 0',
+                background: '#FFFFFF', borderRadius: '8px 8px 0 0',
                 padding: '0.75rem', borderBottom: `2px solid ${STAGE_COLORS[stage]}`,
                 marginBottom: '0.5rem',
               }}>
@@ -43,34 +43,35 @@ export default function Pipeline() {
                     borderRadius: '12px', padding: '1px 8px', fontSize: '0.65rem',
                   }}>{cards.length}</span>
                 </div>
-                <p style={{ fontSize: '0.62rem', color: '#8892A4', marginTop: '2px' }}>{fmt(stageValue)}</p>
+                <p style={{ fontSize: '0.62rem', color: '#64748B', marginTop: '2px' }}>{fmt(stageValue)}</p>
               </div>
 
               {/* Cards */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {cards.map(opp => (
                   <div key={opp.id} style={{
-                    background: '#0D1526', border: '1px solid #1E2D4A', borderRadius: '8px',
+                    background: '#FFFFFF', border: '1px solid #E2E7F0', borderRadius: '8px',
                     padding: '0.75rem', fontSize: '0.7rem',
+                    boxShadow: '0 1px 2px rgba(16,24,40,0.04)',
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                      <span style={{ fontSize: '0.58rem', color: '#8892A4' }}>{opp.solicitation}</span>
+                      <span style={{ fontSize: '0.58rem', color: '#64748B' }}>{opp.solicitation}</span>
                       <ScoreBadge score={opp.aiScore} />
                     </div>
-                    <p style={{ color: '#E8EAF0', marginBottom: '4px', lineHeight: 1.3 }}>
+                    <p style={{ color: '#0F172A', marginBottom: '4px', lineHeight: 1.3 }}>
                       {opp.title.length > 45 ? opp.title.slice(0, 45) + '…' : opp.title}
                     </p>
-                    <p style={{ color: '#8892A4', fontSize: '0.62rem', marginBottom: '6px' }}>
+                    <p style={{ color: '#64748B', fontSize: '0.62rem', marginBottom: '6px' }}>
                       {opp.agency.length > 28 ? opp.agency.slice(0, 28) + '…' : opp.agency}
                     </p>
-                    <p style={{ fontFamily: 'Bebas Neue', fontSize: '1.25rem', color: '#4CAF50' }}>{fmt(opp.value)}</p>
+                    <p style={{ fontFamily: 'Bebas Neue', fontSize: '1.25rem', color: '#15803D' }}>{fmt(opp.value)}</p>
 
                     <div style={{ display: 'flex', gap: '0.3rem', marginTop: '6px', flexWrap: 'wrap' }}>
-                      <Badge text={opp.naics} color="#3B82F6" />
-                      <Badge text={opp.setAside} color="#F5A623" />
+                      <Badge text={opp.naics} color="#2563EB" />
+                      <Badge text={opp.setAside} color="#B45309" />
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px', fontSize: '0.6rem', color: '#8892A4' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px', fontSize: '0.6rem', color: '#64748B' }}>
                       <MapPin size={10} /> {opp.location}
                     </div>
 
@@ -78,8 +79,8 @@ export default function Pipeline() {
                     <div style={{ display: 'flex', gap: '0.4rem', marginTop: '8px' }}>
                       {STAGES.indexOf(stage) > 0 && (
                         <button onClick={() => move(opp.id, -1)} style={{
-                          flex: 1, padding: '3px', background: 'transparent', border: '1px solid #1E2D4A',
-                          borderRadius: '4px', color: '#8892A4', fontSize: '0.6rem', cursor: 'pointer',
+                          flex: 1, padding: '3px', background: 'transparent', border: '1px solid #E2E7F0',
+                          borderRadius: '4px', color: '#64748B', fontSize: '0.6rem', cursor: 'pointer',
                           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px',
                         }}>
                           <ChevronLeft size={11} /> Back
@@ -102,8 +103,8 @@ export default function Pipeline() {
 
                 {cards.length === 0 && (
                   <div style={{
-                    border: '1px dashed #1E2D4A', borderRadius: '8px', padding: '1.5rem',
-                    textAlign: 'center', color: '#2A3A50', fontSize: '0.68rem',
+                    border: '1px dashed #E2E7F0', borderRadius: '8px', padding: '1.5rem',
+                    textAlign: 'center', color: '#94A3B8', fontSize: '0.68rem',
                   }}>
                     No opportunities
                   </div>
