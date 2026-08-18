@@ -195,7 +195,7 @@ export const opportunities = [
 export const STAGES = ['Identified', 'Qualifying', 'Pursuing', 'Proposal', 'Submitted', 'Award'];
 
 export const STAGE_COLORS = {
-  'Identified': '#64748B',
+  'Identified': '#6C757D',
   'Qualifying': '#2563EB',
   'Pursuing': '#B45309',
   'Proposal': '#A16207',

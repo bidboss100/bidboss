@@ -42,21 +42,21 @@ export default function GovConTools() {
         ].map(({ label, sub, icon: Icon, href, color }) => (
           <a key={label} href={href} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
             <div style={{
-              background: '#FFFFFF', border: '1px solid #E2E7F0', borderRadius: '10px', padding: '1rem',
+              background: '#F8F9FA', border: '1px solid #DEE2E6', borderRadius: '10px', padding: '1rem',
               display: 'flex', alignItems: 'center', gap: '0.75rem', transition: 'border-color 0.15s',
               boxShadow: '0 1px 2px rgba(16,24,40,0.04)',
             }}
               onMouseEnter={e => e.currentTarget.style.borderColor = color + '66'}
-              onMouseLeave={e => e.currentTarget.style.borderColor = '#E2E7F0'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = '#DEE2E6'}
             >
               <div style={{ background: color + '20', borderRadius: '8px', padding: '0.5rem' }}>
                 <Icon size={18} color={color} />
               </div>
               <div>
-                <p style={{ fontSize: '0.78rem', color: '#0F172A' }}>{label}</p>
-                <p style={{ fontSize: '0.62rem', color: '#64748B' }}>{sub}</p>
+                <p style={{ fontSize: '0.78rem', color: '#1A1A1A' }}>{label}</p>
+                <p style={{ fontSize: '0.62rem', color: '#6C757D' }}>{sub}</p>
               </div>
-              <ExternalLink size={12} color="#64748B" style={{ marginLeft: 'auto' }} />
+              <ExternalLink size={12} color="#6C757D" style={{ marginLeft: 'auto' }} />
             </div>
           </a>
         ))}
@@ -67,12 +67,12 @@ export default function GovConTools() {
         <Card title="Set-Aside Codes Quick Reference">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             {SET_ASIDES.map(({ code, label, desc }) => (
-              <div key={code} style={{ background: '#F1F4F9', borderRadius: '6px', padding: '0.75rem' }}>
+              <div key={code} style={{ background: '#F1F3F5', borderRadius: '6px', padding: '0.75rem' }}>
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '3px' }}>
                   <span style={{ fontFamily: 'Bebas Neue', fontSize: '0.9rem', color: '#B45309' }}>{code}</span>
-                  <span style={{ fontSize: '0.68rem', color: '#0F172A' }}>{label}</span>
+                  <span style={{ fontSize: '0.68rem', color: '#1A1A1A' }}>{label}</span>
                 </div>
-                <p style={{ fontSize: '0.62rem', color: '#64748B', lineHeight: 1.5 }}>{desc}</p>
+                <p style={{ fontSize: '0.62rem', color: '#6C757D', lineHeight: 1.5 }}>{desc}</p>
               </div>
             ))}
           </div>
@@ -82,11 +82,11 @@ export default function GovConTools() {
         <Card title="Contract Types Reference">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             {CONTRACT_TYPES.map(({ type, label, risk, desc }) => (
-              <div key={type} style={{ background: '#F1F4F9', borderRadius: '6px', padding: '0.75rem' }}>
+              <div key={type} style={{ background: '#F1F3F5', borderRadius: '6px', padding: '0.75rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
                   <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                     <span style={{ fontFamily: 'Bebas Neue', fontSize: '0.9rem', color: '#2563EB' }}>{type}</span>
-                    <span style={{ fontSize: '0.68rem', color: '#0F172A' }}>{label}</span>
+                    <span style={{ fontSize: '0.68rem', color: '#1A1A1A' }}>{label}</span>
                   </div>
                   <span style={{
                     fontSize: '0.58rem', padding: '1px 6px', borderRadius: '3px',
@@ -94,7 +94,7 @@ export default function GovConTools() {
                     border: `1px solid ${risk === 'Contractor' ? '#DC2626' : risk === 'Government' ? '#15803D' : '#B45309'}`,
                   }}>Risk: {risk}</span>
                 </div>
-                <p style={{ fontSize: '0.62rem', color: '#64748B', lineHeight: 1.5 }}>{desc}</p>
+                <p style={{ fontSize: '0.62rem', color: '#6C757D', lineHeight: 1.5 }}>{desc}</p>
               </div>
             ))}
           </div>
@@ -105,19 +105,19 @@ export default function GovConTools() {
       <Card title="NAICS Code Reference — Your Portfolio">
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.72rem' }}>
           <thead>
-            <tr style={{ borderBottom: '1px solid #E2E7F0' }}>
+            <tr style={{ borderBottom: '1px solid #DEE2E6' }}>
               {['NAICS', 'Description', 'SBA Size Standard', 'Notes'].map(h => (
-                <th key={h} style={{ textAlign: 'left', padding: '0.5rem 0.75rem', color: '#64748B', fontWeight: 400, fontSize: '0.65rem' }}>{h}</th>
+                <th key={h} style={{ textAlign: 'left', padding: '0.5rem 0.75rem', color: '#6C757D', fontWeight: 400, fontSize: '0.65rem' }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {NAICS_REF.map(({ code, label, size, notes }, i) => (
-              <tr key={code} style={{ borderBottom: i < NAICS_REF.length - 1 ? '1px solid #F1F4F9' : 'none' }}>
+              <tr key={code} style={{ borderBottom: i < NAICS_REF.length - 1 ? '1px solid #F1F3F5' : 'none' }}>
                 <td style={{ padding: '0.65rem 0.75rem', color: '#B45309', fontFamily: 'Bebas Neue', fontSize: '1rem' }}>{code}</td>
-                <td style={{ padding: '0.65rem 0.75rem', color: '#0F172A' }}>{label}</td>
+                <td style={{ padding: '0.65rem 0.75rem', color: '#1A1A1A' }}>{label}</td>
                 <td style={{ padding: '0.65rem 0.75rem', color: '#15803D', whiteSpace: 'nowrap' }}>{size}</td>
-                <td style={{ padding: '0.65rem 0.75rem', color: '#64748B' }}>{notes}</td>
+                <td style={{ padding: '0.65rem 0.75rem', color: '#6C757D' }}>{notes}</td>
               </tr>
             ))}
           </tbody>
@@ -142,7 +142,7 @@ export default function GovConTools() {
               <div key={item} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
                 <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: color, marginTop: '5px', flexShrink: 0 }} />
                 <div>
-                  <p style={{ fontSize: '0.72rem', color: '#0F172A' }}>{item}</p>
+                  <p style={{ fontSize: '0.72rem', color: '#1A1A1A' }}>{item}</p>
                   <p style={{ fontSize: '0.6rem', color }}>{status}</p>
                 </div>
               </div>

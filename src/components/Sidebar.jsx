@@ -24,16 +24,16 @@ export default function Sidebar() {
       height: '100vh',
       position: 'sticky',
       top: 0,
-      background: '#FFFFFF',
-      borderRight: '1px solid #E2E7F0',
+      background: '#F1F3F5',
+      borderRight: '1px solid #DEE2E6',
       display: 'flex',
       flexDirection: 'column',
     }}>
-      <div style={{ padding: '1.5rem 1.25rem 1.25rem', borderBottom: '1px solid #E2E7F0' }}>
-        <div style={{ fontFamily: 'Bebas Neue', fontSize: '2rem', color: '#F5A623', letterSpacing: '0.12em', lineHeight: 1 }}>
+      <div style={{ padding: '1.5rem 1.25rem 1.25rem', borderBottom: '1px solid #DEE2E6' }}>
+        <div style={{ fontFamily: 'Bebas Neue', fontSize: '2rem', color: '#1A1A1A', letterSpacing: '0.12em', lineHeight: 1 }}>
           BID BOSS
         </div>
-        <div style={{ fontSize: '0.58rem', color: '#94A3B8', marginTop: '3px', letterSpacing: '0.1em' }}>
+        <div style={{ fontSize: '0.58rem', color: '#ADB5BD', marginTop: '3px', letterSpacing: '0.1em' }}>
           FEDERAL CONTRACTING PLATFORM
         </div>
       </div>
@@ -49,9 +49,9 @@ export default function Sidebar() {
             borderRadius: '6px',
             textDecoration: 'none',
             fontSize: '0.75rem',
-            color: isActive ? '#B45309' : '#64748B',
-            background: isActive ? 'rgba(245,166,35,0.12)' : 'transparent',
-            borderLeft: `2px solid ${isActive ? '#F5A623' : 'transparent'}`,
+            color: isActive ? '#1864AB' : '#6C757D',
+            background: isActive ? '#E8F4FD' : 'transparent',
+            borderLeft: `2px solid ${isActive ? '#1864AB' : 'transparent'}`,
             fontWeight: isActive ? 500 : 400,
             transition: 'all 0.12s',
           })}>
@@ -61,8 +61,8 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div style={{ padding: '0.75rem 1.25rem', borderTop: '1px solid #E2E7F0' }}>
-        <div style={{ fontSize: '0.58rem', color: '#94A3B8' }}>v1.0.0 · SAM.gov Ready</div>
+      <div style={{ padding: '0.75rem 1.25rem', borderTop: '1px solid #DEE2E6' }}>
+        <div style={{ fontSize: '0.58rem', color: '#ADB5BD' }}>v1.0.0 · SAM.gov Ready</div>
       </div>
     </aside>
   )

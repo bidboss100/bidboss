@@ -3,7 +3,7 @@ import { invoices as initialInvoices, fmt } from '../data/sampleData'
 import { Plus, DollarSign, Clock, AlertTriangle, CheckCircle } from 'lucide-react'
 import { Card, StatCard, Badge, Btn, PageHeader } from '../components/UI'
 
-const STATUS_COLORS = { Paid: '#15803D', Sent: '#2563EB', Draft: '#64748B', Overdue: '#DC2626' }
+const STATUS_COLORS = { Paid: '#15803D', Sent: '#2563EB', Draft: '#6C757D', Overdue: '#DC2626' }
 const STATUS_ICONS = { Paid: CheckCircle, Sent: Clock, Draft: DollarSign, Overdue: AlertTriangle }
 
 const emptyInvoice = { client: '', contract: '', amount: '', due: '', status: 'Draft' }
@@ -43,12 +43,12 @@ export default function Invoicing() {
         <StatCard label="Paid This Period" value={fmt(paid)} icon={CheckCircle} color="#15803D" sub="Collected revenue" />
         <StatCard label="Outstanding" value={fmt(outstanding)} icon={Clock} color="#2563EB" sub="Awaiting payment" />
         <StatCard label="Overdue" value={fmt(overdue)} icon={AlertTriangle} color="#DC2626" sub="Past due date" />
-        <StatCard label="Draft Invoices" value={drafts} icon={DollarSign} color="#64748B" sub="Not yet sent" />
+        <StatCard label="Draft Invoices" value={drafts} icon={DollarSign} color="#6C757D" sub="Not yet sent" />
       </div>
 
       {/* Header row */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '1.1rem', color: '#0F172A' }}>ALL INVOICES</h2>
+        <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '1.1rem', color: '#1A1A1A' }}>ALL INVOICES</h2>
         <Btn variant="gold" onClick={() => setShowForm(true)}>
           <Plus size={13} style={{ display: 'inline', marginRight: '4px' }} /> New Invoice
         </Btn>
@@ -56,12 +56,12 @@ export default function Invoicing() {
 
       {/* New Invoice Form */}
       {showForm && (
-        <Card style={{ marginBottom: '1rem', borderColor: '#F5A62344' }}>
-          <h3 style={{ fontFamily: 'Bebas Neue', fontSize: '1rem', color: '#0F172A', marginBottom: '1rem' }}>NEW INVOICE</h3>
+        <Card style={{ marginBottom: '1rem' }}>
+          <h3 style={{ fontFamily: 'Bebas Neue', fontSize: '1rem', color: '#1A1A1A', marginBottom: '1rem' }}>NEW INVOICE</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '0.75rem' }}>
             {[['client','Client / Agency *'],['contract','Contract Number'],['amount','Amount ($) *'],['due','Due Date']].map(([field, label]) => (
               <div key={field}>
-                <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>{label}</label>
+                <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>{label}</label>
                 <input
                   type={field === 'due' ? 'date' : field === 'amount' ? 'number' : 'text'}
                   value={form[field]}
@@ -71,7 +71,7 @@ export default function Invoicing() {
               </div>
             ))}
             <div>
-              <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>Status</label>
+              <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>Status</label>
               <select value={form.status} onChange={e => setForm(p => ({ ...p, status: e.target.value }))}>
                 {['Draft', 'Sent', 'Paid', 'Overdue'].map(s => <option key={s}>{s}</option>)}
               </select>
@@ -87,11 +87,11 @@ export default function Invoicing() {
       {/* Invoice cards */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {invoices.map(inv => {
-          const color = STATUS_COLORS[inv.status] || '#64748B'
+          const color = STATUS_COLORS[inv.status] || '#6C757D'
           const Icon = STATUS_ICONS[inv.status] || DollarSign
           return (
             <div key={inv.id} style={{
-              background: '#FFFFFF', border: `1px solid ${inv.status === 'Overdue' ? '#DC262633' : '#E2E7F0'}`,
+              background: '#F8F9FA', border: `1px solid ${inv.status === 'Overdue' ? '#DC262633' : '#DEE2E6'}`,
               borderRadius: '10px', padding: '1rem 1.25rem',
               display: 'grid', gridTemplateColumns: '1fr auto auto auto', gap: '1.5rem', alignItems: 'center',
               boxShadow: '0 1px 2px rgba(16,24,40,0.04)',
@@ -107,26 +107,26 @@ export default function Invoicing() {
                     <Icon size={10} /> {inv.status}
                   </span>
                 </div>
-                <p style={{ fontSize: '0.78rem', color: '#0F172A' }}>{inv.client}</p>
-                <p style={{ fontSize: '0.62rem', color: '#64748B', marginTop: '2px' }}>{inv.contract}</p>
+                <p style={{ fontSize: '0.78rem', color: '#1A1A1A' }}>{inv.client}</p>
+                <p style={{ fontSize: '0.62rem', color: '#6C757D', marginTop: '2px' }}>{inv.contract}</p>
               </div>
 
               <div style={{ textAlign: 'right' }}>
-                <p style={{ fontFamily: 'Bebas Neue', fontSize: '1.5rem', color: inv.status === 'Paid' ? '#15803D' : inv.status === 'Overdue' ? '#DC2626' : '#0F172A' }}>
+                <p style={{ fontFamily: 'Bebas Neue', fontSize: '1.5rem', color: inv.status === 'Paid' ? '#15803D' : inv.status === 'Overdue' ? '#DC2626' : '#1A1A1A' }}>
                   {fmt$(inv.amount)}
                 </p>
               </div>
 
-              <div style={{ fontSize: '0.65rem', color: '#64748B', textAlign: 'right', whiteSpace: 'nowrap' }}>
+              <div style={{ fontSize: '0.65rem', color: '#6C757D', textAlign: 'right', whiteSpace: 'nowrap' }}>
                 <p>Issued: {inv.issued}</p>
-                <p style={{ color: inv.status === 'Overdue' ? '#DC2626' : '#64748B' }}>Due: {inv.due}</p>
+                <p style={{ color: inv.status === 'Overdue' ? '#DC2626' : '#6C757D' }}>Due: {inv.due}</p>
               </div>
 
               <div>
                 <select
                   value={inv.status}
                   onChange={e => updateStatus(inv.id, e.target.value)}
-                  style={{ width: '100px', border: `1px solid ${color}55`, color, background: '#F1F4F9', padding: '4px 8px', fontSize: '0.68rem' }}
+                  style={{ width: '100px', border: `1px solid ${color}55`, color, background: '#F1F3F5', padding: '4px 8px', fontSize: '0.68rem' }}
                 >
                   {['Draft', 'Sent', 'Paid', 'Overdue'].map(s => <option key={s}>{s}</option>)}
                 </select>

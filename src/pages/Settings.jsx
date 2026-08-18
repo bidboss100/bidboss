@@ -36,8 +36,8 @@ export default function Settings() {
   const Section = ({ icon: Icon, title, children }) => (
     <Card style={{ marginBottom: '1.25rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
-        <Icon size={16} color="#F5A623" />
-        <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '1.1rem', color: '#0F172A', letterSpacing: '0.06em' }}>{title}</h2>
+        <Icon size={16} color="#1A1A1A" />
+        <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '1.1rem', color: '#1A1A1A', letterSpacing: '0.06em' }}>{title}</h2>
       </div>
       {children}
     </Card>
@@ -49,7 +49,7 @@ export default function Settings() {
 
       {/* SAM.gov API Key */}
       <Section icon={Key} title="SAM.gov API Key">
-        <p style={{ fontSize: '0.68rem', color: '#64748B', marginBottom: '1rem', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '0.68rem', color: '#6C757D', marginBottom: '1rem', lineHeight: 1.6 }}>
           Enter your SAM.gov API key to enable live opportunity searches. Get a free key at{' '}
           <a href="https://open.gsa.gov/api/get-started/" target="_blank" rel="noreferrer" style={{ color: '#B45309' }}>open.gsa.gov</a>.
         </p>
@@ -64,7 +64,7 @@ export default function Settings() {
             />
             <button
               onClick={() => setShowKey(p => !p)}
-              style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#64748B', cursor: 'pointer' }}
+              style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#6C757D', cursor: 'pointer' }}
             >
               {showKey ? <EyeOff size={14} /> : <Eye size={14} />}
             </button>
@@ -80,32 +80,32 @@ export default function Settings() {
 
       {/* Data Sources */}
       <Section icon={Globe} title="Data Sources">
-        <p style={{ fontSize: '0.68rem', color: '#64748B', marginBottom: '0.75rem', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '0.68rem', color: '#6C757D', marginBottom: '0.75rem', lineHeight: 1.6 }}>
           Opportunity sources feeding your Opportunities page.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#F1F4F9', border: '1px solid #E2E7F0', borderRadius: '6px', padding: '0.75rem 1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#F1F3F5', border: '1px solid #DEE2E6', borderRadius: '6px', padding: '0.75rem 1rem' }}>
             <div>
-              <p style={{ fontSize: '0.75rem', color: '#0F172A' }}>Federal — SAM.gov</p>
-              <p style={{ fontSize: '0.62rem', color: '#64748B', marginTop: '2px' }}>Enabled via API key above</p>
+              <p style={{ fontSize: '0.75rem', color: '#1A1A1A' }}>Federal — SAM.gov</p>
+              <p style={{ fontSize: '0.62rem', color: '#6C757D', marginTop: '2px' }}>Enabled via API key above</p>
             </div>
             <Badge text="ACTIVE" color="#2563EB" />
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#F1F4F9', border: '1px solid #E2E7F0', borderRadius: '6px', padding: '0.75rem 1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#F1F3F5', border: '1px solid #DEE2E6', borderRadius: '6px', padding: '0.75rem 1rem' }}>
             <div>
-              <p style={{ fontSize: '0.75rem', color: '#0F172A' }}>
+              <p style={{ fontSize: '0.75rem', color: '#1A1A1A' }}>
                 State & Local — Texas SmartBuy{' '}
                 <a href="https://www.txsmartbuy.gov" target="_blank" rel="noreferrer" style={{ color: '#0E7490', fontSize: '0.62rem' }}>(txsmartbuy.gov)</a>
               </p>
-              <p style={{ fontSize: '0.62rem', color: '#64748B', marginTop: '2px' }}>Plus manually-added county, city, and school-district postings</p>
+              <p style={{ fontSize: '0.62rem', color: '#6C757D', marginTop: '2px' }}>Plus manually-added county, city, and school-district postings</p>
             </div>
             <Badge text="ACTIVE" color="#0E7490" />
           </div>
         </div>
-        <p style={{ fontSize: '0.62rem', color: '#94A3B8', marginTop: '0.85rem', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '0.62rem', color: '#ADB5BD', marginTop: '0.85rem', lineHeight: 1.6 }}>
           Texas SmartBuy and most county/city/school-district portals don't expose a public API, so listings from them
-          are added manually — go to the <strong style={{ color: '#64748B' }}>Opportunities</strong> page and click{' '}
-          <strong style={{ color: '#64748B' }}>+ Add State/Local Opportunity</strong> to paste one in. Supported portals:
+          are added manually — go to the <strong style={{ color: '#6C757D' }}>Opportunities</strong> page and click{' '}
+          <strong style={{ color: '#6C757D' }}>+ Add State/Local Opportunity</strong> to paste one in. Supported portals:
           Texas SmartBuy, Tarrant County Purchasing, City of Fort Worth Purchasing, City of Dallas Purchasing, Dallas ISD
           (and other school districts), TxDOT, and any other Texas city or county.
         </p>
@@ -124,7 +124,7 @@ export default function Settings() {
             ['email', 'Email Address'],
           ].map(([field, label]) => (
             <div key={field} style={field === 'address' ? { gridColumn: '1 / -1' } : {}}>
-              <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>{label}</label>
+              <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>{label}</label>
               <input
                 value={company[field]}
                 onChange={e => setCompany(p => ({ ...p, [field]: e.target.value }))}
@@ -137,20 +137,20 @@ export default function Settings() {
 
       {/* NAICS Codes */}
       <Section icon={Shield} title="Your NAICS Codes">
-        <p style={{ fontSize: '0.68rem', color: '#64748B', marginBottom: '0.75rem' }}>
+        <p style={{ fontSize: '0.68rem', color: '#6C757D', marginBottom: '0.75rem' }}>
           NAICS codes your company is registered and certified under.
         </p>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
           {naics.map(code => (
             <div key={code} style={{
               display: 'flex', alignItems: 'center', gap: '0.4rem',
-              background: '#F1F4F9', border: '1px solid #F5A62344', borderRadius: '5px',
+              background: '#F1F3F5', border: '1px solid #B8860B44', borderRadius: '5px',
               padding: '4px 10px', fontSize: '0.72rem', color: '#B45309',
             }}>
               {code}
               <button
                 onClick={() => setNaics(p => p.filter(n => n !== code))}
-                style={{ background: 'none', border: 'none', color: '#64748B', cursor: 'pointer', lineHeight: 1, padding: 0 }}
+                style={{ background: 'none', border: 'none', color: '#6C757D', cursor: 'pointer', lineHeight: 1, padding: 0 }}
               >×</button>
             </div>
           ))}
@@ -169,24 +169,24 @@ export default function Settings() {
 
       {/* Set-Aside Certifications */}
       <Section icon={Shield} title="Set-Aside Certifications">
-        <p style={{ fontSize: '0.68rem', color: '#64748B', marginBottom: '0.75rem' }}>
+        <p style={{ fontSize: '0.68rem', color: '#6C757D', marginBottom: '0.75rem' }}>
           Select all set-aside designations your company holds.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem' }}>
           {Object.entries(setAsides).map(([code, active]) => (
             <label key={code} style={{
               display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer',
-              background: active ? 'rgba(245,166,35,0.08)' : '#F1F4F9',
-              border: `1px solid ${active ? '#F5A62355' : '#E2E7F0'}`,
+              background: active ? 'rgba(184,134,11,0.08)' : '#F1F3F5',
+              border: `1px solid ${active ? '#B8860B55' : '#DEE2E6'}`,
               borderRadius: '6px', padding: '0.6rem 0.75rem',
             }}>
               <input
                 type="checkbox"
                 checked={active}
                 onChange={() => setSetAsides(p => ({ ...p, [code]: !p[code] }))}
-                style={{ width: 'auto', accentColor: '#F5A623' }}
+                style={{ width: 'auto', accentColor: '#B8860B' }}
               />
-              <span style={{ fontSize: '0.72rem', color: active ? '#B45309' : '#64748B' }}>{code}</span>
+              <span style={{ fontSize: '0.72rem', color: active ? '#B45309' : '#6C757D' }}>{code}</span>
             </label>
           ))}
         </div>

@@ -98,7 +98,7 @@ export default function Opportunities() {
       {/* Filters */}
       <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.85rem', flexWrap: 'wrap', alignItems: 'center' }}>
         <div style={{ position: 'relative', flex: '1', minWidth: '200px' }}>
-          <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#64748B' }} />
+          <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#6C757D' }} />
           <input
             placeholder="Search opportunities, agencies, solicitations..."
             value={search}
@@ -114,12 +114,12 @@ export default function Opportunities() {
           <option value="All">All Set-Asides</option>
           {SET_ASIDES.map(s => <option key={s} value={s}>{s}</option>)}
         </select>
-        <span style={{ fontSize: '0.7rem', color: '#64748B', whiteSpace: 'nowrap' }}>{filtered.length} result{filtered.length !== 1 ? 's' : ''}</span>
+        <span style={{ fontSize: '0.7rem', color: '#6C757D', whiteSpace: 'nowrap' }}>{filtered.length} result{filtered.length !== 1 ? 's' : ''}</span>
       </div>
 
       {/* Source toggle + manual entry */}
       <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', gap: '0.4rem', background: '#FFFFFF', border: '1px solid #E2E7F0', borderRadius: '7px', padding: '3px' }}>
+        <div style={{ display: 'flex', gap: '0.4rem', background: '#F8F9FA', border: '1px solid #DEE2E6', borderRadius: '7px', padding: '3px' }}>
           {SOURCE_FILTERS.map(s => (
             <button
               key={s}
@@ -131,8 +131,8 @@ export default function Opportunities() {
                 borderRadius: '5px',
                 border: 'none',
                 cursor: 'pointer',
-                background: sourceFilter === s ? '#F5A623' : 'transparent',
-                color: sourceFilter === s ? '#0F172A' : '#64748B',
+                background: sourceFilter === s ? '#B8860B' : 'transparent',
+                color: sourceFilter === s ? '#1A1A1A' : '#6C757D',
                 fontWeight: sourceFilter === s ? 500 : 400,
                 transition: 'background 0.15s, color 0.15s',
               }}
@@ -150,12 +150,12 @@ export default function Opportunities() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1rem' }}>
         {filtered.map(opp => {
           const days = daysUntil(opp.dueDate)
-          const urgentColor = days <= 7 ? '#DC2626' : days <= 14 ? '#B45309' : '#64748B'
+          const urgentColor = days <= 7 ? '#DC2626' : days <= 14 ? '#B45309' : '#6C757D'
           const sourceColor = opp.source === 'State/Local' ? '#0E7490' : '#2563EB'
           return (
             <div key={opp.id} style={{
-              background: '#FFFFFF',
-              border: '1px solid #E2E7F0',
+              background: '#F8F9FA',
+              border: '1px solid #DEE2E6',
               borderLeft: `3px solid ${sourceColor}`,
               borderRadius: '10px',
               padding: '1.1rem',
@@ -164,25 +164,25 @@ export default function Opportunities() {
               gap: '0.6rem',
               transition: 'border-color 0.15s',
             }}
-              onMouseEnter={e => e.currentTarget.style.borderColor = '#F5A62355'}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = '#E2E7F0'; e.currentTarget.style.borderLeftColor = sourceColor }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = '#CED4DA'}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = '#DEE2E6'; e.currentTarget.style.borderLeftColor = sourceColor }}
             >
               {/* Top row: source + solicitation + score */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   <SourceBadge source={opp.source} />
-                  <span style={{ fontSize: '0.62rem', color: '#64748B', fontFamily: 'DM Mono' }}>{opp.solicitation}</span>
+                  <span style={{ fontSize: '0.62rem', color: '#6C757D', fontFamily: 'DM Mono' }}>{opp.solicitation}</span>
                 </div>
-                {opp.aiScore != null ? <ScoreBadge score={opp.aiScore} /> : <Badge text="MANUAL" color="#64748B" />}
+                {opp.aiScore != null ? <ScoreBadge score={opp.aiScore} /> : <Badge text="MANUAL" color="#6C757D" />}
               </div>
 
               {/* Title */}
-              <h3 style={{ fontSize: '0.88rem', color: '#0F172A', lineHeight: 1.3, fontFamily: 'DM Mono', fontWeight: 500 }}>
+              <h3 style={{ fontSize: '0.88rem', color: '#1A1A1A', lineHeight: 1.3, fontFamily: 'DM Mono', fontWeight: 500 }}>
                 {opp.title}
               </h3>
 
               {/* Agency */}
-              <p style={{ fontSize: '0.68rem', color: '#64748B' }}>
+              <p style={{ fontSize: '0.68rem', color: '#6C757D' }}>
                 {opp.agency}
                 {opp.sourceUrl && (
                   <a href={opp.sourceUrl} target="_blank" rel="noreferrer" style={{ color: sourceColor, marginLeft: '6px' }}>
@@ -198,13 +198,13 @@ export default function Opportunities() {
               <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                 <Badge text={opp.naics} color="#2563EB" />
                 <Badge text={opp.naicsTitle} color="#2563EB" />
-                {opp.setAside && <Badge text={opp.setAside} color={SET_ASIDE_COLORS[opp.setAside] || '#64748B'} />}
-                <Badge text={opp.type} color="#64748B" />
+                {opp.setAside && <Badge text={opp.setAside} color={SET_ASIDE_COLORS[opp.setAside] || '#6C757D'} />}
+                <Badge text={opp.type} color="#6C757D" />
               </div>
 
               {/* Location + Due */}
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '0.65rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '0.65rem', color: '#6C757D', display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <MapPin size={11} /> {opp.location}
                 </span>
                 <span style={{ fontSize: '0.65rem', color: urgentColor, display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -213,7 +213,7 @@ export default function Opportunities() {
               </div>
 
               {/* Description */}
-              <p style={{ fontSize: '0.65rem', color: '#94A3B8', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '0.65rem', color: '#ADB5BD', lineHeight: 1.5 }}>
                 {opp.description.slice(0, 100)}…
               </p>
 
@@ -241,15 +241,15 @@ export default function Opportunities() {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }} onClick={() => setDrafting(null)}>
           <div style={{
-            background: '#FFFFFF', border: '1px solid #F5A62355', borderRadius: '12px',
+            background: '#F8F9FA', border: '1px solid #DEE2E6', borderRadius: '12px',
             padding: '2rem', width: '600px', maxWidth: '95vw',
           }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '1.6rem', color: '#0F172A', marginBottom: '0.5rem' }}>
+            <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '1.6rem', color: '#1A1A1A', marginBottom: '0.5rem' }}>
               PROPOSAL DRAFT — {drafting.solicitation}
             </h2>
-            <p style={{ fontSize: '0.7rem', color: '#64748B', marginBottom: '1.25rem' }}>{drafting.title}</p>
+            <p style={{ fontSize: '0.7rem', color: '#6C757D', marginBottom: '1.25rem' }}>{drafting.title}</p>
 
-            <div style={{ background: '#F1F4F9', borderRadius: '8px', padding: '1.25rem', marginBottom: '1rem', fontSize: '0.75rem', lineHeight: 1.8, color: '#1E293B' }}>
+            <div style={{ background: '#F1F3F5', borderRadius: '8px', padding: '1.25rem', marginBottom: '1rem', fontSize: '0.75rem', lineHeight: 1.8, color: '#1A1A1A' }}>
               <p><strong style={{ color: '#B45309' }}>COVER LETTER DRAFT</strong></p>
               <br />
               <p>Solicitation No.: {drafting.solicitation}</p>
@@ -279,19 +279,19 @@ export default function Opportunities() {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }} onClick={() => setAdding(false)}>
           <div style={{
-            background: '#FFFFFF', border: '1px solid #0E749055', borderRadius: '12px',
+            background: '#F8F9FA', border: '1px solid #0E749055', borderRadius: '12px',
             padding: '2rem', width: '560px', maxWidth: '95vw', maxHeight: '85vh', overflowY: 'auto',
           }} onClick={e => e.stopPropagation()}>
             <h2 style={{ fontFamily: 'Bebas Neue', fontSize: '1.6rem', color: '#0E7490', marginBottom: '0.25rem' }}>
               ADD STATE/LOCAL OPPORTUNITY
             </h2>
-            <p style={{ fontSize: '0.7rem', color: '#64748B', marginBottom: '1.25rem' }}>
+            <p style={{ fontSize: '0.7rem', color: '#6C757D', marginBottom: '1.25rem' }}>
               Paste in a contract you found on Texas SmartBuy, a county, city, school district, or TxDOT portal.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               <div>
-                <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>Title *</label>
+                <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>Title *</label>
                 <input
                   value={manualEntry.title}
                   onChange={e => setManualEntry(p => ({ ...p, title: e.target.value }))}
@@ -302,7 +302,7 @@ export default function Opportunities() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <div>
-                  <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>Source Portal</label>
+                  <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>Source Portal</label>
                   <select
                     value={manualEntry.portal}
                     onChange={e => setManualEntry(p => ({ ...p, portal: e.target.value }))}
@@ -313,7 +313,7 @@ export default function Opportunities() {
                 </div>
                 {manualEntry.portal === 'Other Texas City / County' && (
                   <div>
-                    <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>Entity Name</label>
+                    <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>Entity Name</label>
                     <input
                       value={manualEntry.customPortal}
                       onChange={e => setManualEntry(p => ({ ...p, customPortal: e.target.value }))}
@@ -326,7 +326,7 @@ export default function Opportunities() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <div>
-                  <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>Solicitation / Ref #</label>
+                  <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>Solicitation / Ref #</label>
                   <input
                     value={manualEntry.solicitation}
                     onChange={e => setManualEntry(p => ({ ...p, solicitation: e.target.value }))}
@@ -335,7 +335,7 @@ export default function Opportunities() {
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>NAICS Code</label>
+                  <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>NAICS Code</label>
                   <select
                     value={manualEntry.naics}
                     onChange={e => setManualEntry(p => ({ ...p, naics: e.target.value }))}
@@ -348,7 +348,7 @@ export default function Opportunities() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <div>
-                  <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>Estimated Value ($)</label>
+                  <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>Estimated Value ($)</label>
                   <input
                     type="number"
                     value={manualEntry.value}
@@ -358,7 +358,7 @@ export default function Opportunities() {
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>Due Date</label>
+                  <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>Due Date</label>
                   <input
                     type="date"
                     value={manualEntry.dueDate}
@@ -369,7 +369,7 @@ export default function Opportunities() {
               </div>
 
               <div>
-                <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>Location</label>
+                <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>Location</label>
                 <input
                   value={manualEntry.location}
                   onChange={e => setManualEntry(p => ({ ...p, location: e.target.value }))}
@@ -379,7 +379,7 @@ export default function Opportunities() {
               </div>
 
               <div>
-                <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>Link to Posting</label>
+                <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>Link to Posting</label>
                 <input
                   value={manualEntry.link}
                   onChange={e => setManualEntry(p => ({ ...p, link: e.target.value }))}
@@ -389,7 +389,7 @@ export default function Opportunities() {
               </div>
 
               <div>
-                <label style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', marginBottom: '4px' }}>Description</label>
+                <label style={{ fontSize: '0.62rem', color: '#6C757D', display: 'block', marginBottom: '4px' }}>Description</label>
                 <textarea
                   value={manualEntry.description}
                   onChange={e => setManualEntry(p => ({ ...p, description: e.target.value }))}

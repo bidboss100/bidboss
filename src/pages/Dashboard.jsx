@@ -38,9 +38,9 @@ export default function Dashboard() {
             <div key={stage} style={{ marginBottom: '0.85rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                 <span style={{ fontSize: '0.72rem', color: STAGE_COLORS[stage] }}>{stage}</span>
-                <span style={{ fontSize: '0.7rem', color: '#0F172A' }}>{count} opp{count > 1 ? 's' : ''} · {fmt(value)}</span>
+                <span style={{ fontSize: '0.7rem', color: '#1A1A1A' }}>{count} opp{count > 1 ? 's' : ''} · {fmt(value)}</span>
               </div>
-              <div style={{ background: '#E2E7F0', borderRadius: '3px', height: '6px', overflow: 'hidden' }}>
+              <div style={{ background: '#DEE2E6', borderRadius: '3px', height: '6px', overflow: 'hidden' }}>
                 <div style={{
                   width: `${(count / opportunities.length) * 100}%`,
                   height: '100%',
@@ -56,13 +56,13 @@ export default function Dashboard() {
           {opportunities.slice(0, 5).map((opp, i) => (
             <div key={opp.id} style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-              padding: '0.6rem 0', borderBottom: i < 4 ? '1px solid #E2E7F0' : 'none',
+              padding: '0.6rem 0', borderBottom: i < 4 ? '1px solid #DEE2E6' : 'none',
             }}>
               <div>
-                <p style={{ fontSize: '0.72rem', color: '#0F172A', marginBottom: '3px' }}>
+                <p style={{ fontSize: '0.72rem', color: '#1A1A1A', marginBottom: '3px' }}>
                   {opp.title.length > 38 ? opp.title.slice(0, 38) + '…' : opp.title}
                 </p>
-                <p style={{ fontSize: '0.62rem', color: '#64748B' }}>
+                <p style={{ fontSize: '0.62rem', color: '#6C757D' }}>
                   {opp.agency.length > 30 ? opp.agency.slice(0, 30) + '…' : opp.agency}
                 </p>
               </div>
@@ -82,12 +82,12 @@ export default function Dashboard() {
             const val = opps.reduce((s, o) => s + o.value, 0)
             return (
               <div key={code} style={{
-                background: '#F1F4F9', borderRadius: '8px', padding: '1rem',
+                background: '#F1F3F5', borderRadius: '8px', padding: '1rem',
                 borderLeft: `3px solid ${color}`,
               }}>
                 <p style={{ fontFamily: 'Bebas Neue', fontSize: '1.6rem', color, lineHeight: 1 }}>{fmt(val)}</p>
-                <p style={{ fontSize: '0.75rem', color: '#0F172A', marginTop: '4px' }}>{label}</p>
-                <p style={{ fontSize: '0.62rem', color: '#64748B', marginTop: '2px' }}>NAICS {code} · {opps.length} opp{opps.length !== 1 ? 's' : ''}</p>
+                <p style={{ fontSize: '0.75rem', color: '#1A1A1A', marginTop: '4px' }}>{label}</p>
+                <p style={{ fontSize: '0.62rem', color: '#6C757D', marginTop: '2px' }}>NAICS {code} · {opps.length} opp{opps.length !== 1 ? 's' : ''}</p>
               </div>
             )
           })}
@@ -99,18 +99,18 @@ export default function Dashboard() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
             {leads.filter(l => l.stage !== 'Cold').map(lead => (
               <div key={lead.id} style={{
-                background: '#F1F4F9', borderRadius: '8px', padding: '0.875rem',
+                background: '#F1F3F5', borderRadius: '8px', padding: '0.875rem',
                 borderLeft: `3px solid ${lead.stage === 'Hot' ? '#DC2626' : '#B45309'}`,
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                  <p style={{ fontSize: '0.75rem', color: '#0F172A', fontWeight: 500 }}>{lead.name}</p>
+                  <p style={{ fontSize: '0.75rem', color: '#1A1A1A', fontWeight: 500 }}>{lead.name}</p>
                   <span style={{
                     fontSize: '0.58rem', padding: '1px 6px', borderRadius: '3px',
                     background: lead.stage === 'Hot' ? 'rgba(239,68,68,0.15)' : 'rgba(245,158,11,0.15)',
                     color: lead.stage === 'Hot' ? '#DC2626' : '#B45309',
                   }}>{lead.stage}</span>
                 </div>
-                <p style={{ fontSize: '0.65rem', color: '#64748B' }}>{lead.company}</p>
+                <p style={{ fontSize: '0.65rem', color: '#6C757D' }}>{lead.company}</p>
                 <p style={{ fontSize: '0.65rem', color: '#15803D', marginTop: '4px' }}>{fmt(lead.value)}</p>
               </div>
             ))}
