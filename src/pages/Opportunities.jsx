@@ -3,8 +3,12 @@ import {
   opportunities as initialOpps, stateLocalOpportunities as initialStateLocal,
   NAICS_LIST, SET_ASIDES, STAGES, STAGE_COLORS, STATE_LOCAL_PORTALS, fmt,
 } from '../data/sampleData'
-import { Search, MapPin, Calendar, ExternalLink, Plus } from 'lucide-react'
+import { Search, MapPin, Calendar, ExternalLink, Plus, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react'
 import { Badge, ScoreBadge, StageBadge, SourceBadge, Btn, PageHeader } from '../components/UI'
+import { syncSamOpportunities } from '../lib/samgov'
+import { STORAGE_KEYS, loadJSON } from '../lib/storage'
+
+const NAICS_TITLE_LOOKUP = Object.fromEntries(NAICS_LIST.map(n => [n.code, n.label]))
 
 const SET_ASIDE_COLORS = {
   'SB': '#2563EB', 'SDVOSB': '#15803D', 'VOSB': '#0E7490',
@@ -31,6 +35,38 @@ export default function Opportunities() {
   const [drafting, setDrafting] = useState(null)
   const [adding, setAdding] = useState(false)
   const [manualEntry, setManualEntry] = useState(emptyManualEntry)
+  const [syncing, setSyncing] = useState(false)
+  const [syncResult, setSyncResult] = useState(null)
+
+  const handleSync = async () => {
+    const apiKey = loadJSON(STORAGE_KEYS.SAM_API_KEY, '')
+    const naicsCodes = loadJSON(STORAGE_KEYS.NAICS_CODES, [])
+
+    if (!apiKey) {
+      setSyncResult({ type: 'error', message: 'No SAM.gov API key set — add one in Settings first.' })
+      return
+    }
+
+    setSyncing(true)
+    setSyncResult(null)
+    try {
+      const { opportunities: live, errors } = await syncSamOpportunities({
+        apiKey, naicsCodes, naicsTitleLookup: NAICS_TITLE_LOOKUP,
+      })
+      setOpps(prev => [...live, ...prev.filter(o => o.source === 'State/Local')])
+      setSyncResult({
+        type: errors.length ? 'partial' : 'success',
+        message: errors.length
+          ? `${live.length} live opportunities loaded · ${errors.length} of ${naicsCodes.length} NAICS lookups failed (${errors[0].message})`
+          : `${live.length} live opportunities loaded from SAM.gov`,
+        at: new Date(),
+      })
+    } catch (err) {
+      setSyncResult({ type: 'error', message: err.message })
+    } finally {
+      setSyncing(false)
+    }
+  }
 
   const daysUntil = (d) => {
     const diff = new Date(d) - new Date()
@@ -93,7 +129,7 @@ export default function Opportunities() {
 
   return (
     <div>
-      <PageHeader title="OPPORTUNITIES" sub="SAM.gov federal + Texas state/local contract opportunities · Live pipeline tracking" />
+      <PageHeader title="OPPORTUNITIES" sub="Federal (SAM.gov) + Texas state/local contract opportunities · Sample data until synced" />
 
       {/* Filters */}
       <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.85rem', flexWrap: 'wrap', alignItems: 'center' }}>
@@ -141,16 +177,33 @@ export default function Opportunities() {
             </button>
           ))}
         </div>
-        <Btn variant="outline" onClick={() => setAdding(true)}>
-          <Plus size={12} style={{ display: 'inline', verticalAlign: '-2px', marginRight: '4px' }} /> Add State/Local Opportunity
-        </Btn>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <Btn variant="ghost" onClick={handleSync} style={syncing ? { opacity: 0.6, cursor: 'wait' } : {}}>
+            <RefreshCw size={12} style={{ display: 'inline', verticalAlign: '-2px', marginRight: '4px', animation: syncing ? 'spin 0.8s linear infinite' : 'none' }} />
+            {syncing ? 'Syncing SAM.gov…' : 'Sync SAM.gov'}
+          </Btn>
+          <Btn variant="outline" onClick={() => setAdding(true)}>
+            <Plus size={12} style={{ display: 'inline', verticalAlign: '-2px', marginRight: '4px' }} /> Add State/Local Opportunity
+          </Btn>
+        </div>
       </div>
+
+      {syncResult && (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.68rem', marginBottom: '1rem',
+          color: syncResult.type === 'error' ? '#DC2626' : syncResult.type === 'partial' ? '#B45309' : '#15803D',
+        }}>
+          {syncResult.type === 'error' ? <AlertCircle size={12} /> : <CheckCircle2 size={12} />}
+          {syncResult.message}
+          {syncResult.at && ` · ${syncResult.at.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`}
+        </div>
+      )}
 
       {/* Cards grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1rem' }}>
         {filtered.map(opp => {
-          const days = daysUntil(opp.dueDate)
-          const urgentColor = days <= 7 ? '#DC2626' : days <= 14 ? '#B45309' : '#6C757D'
+          const days = opp.dueDate ? daysUntil(opp.dueDate) : null
+          const urgentColor = days == null ? '#6C757D' : days <= 7 ? '#DC2626' : days <= 14 ? '#B45309' : '#6C757D'
           const sourceColor = opp.source === 'State/Local' ? '#0E7490' : '#2563EB'
           return (
             <div key={opp.id} style={{
@@ -173,7 +226,11 @@ export default function Opportunities() {
                   <SourceBadge source={opp.source} />
                   <span style={{ fontSize: '0.62rem', color: '#6C757D', fontFamily: 'DM Mono' }}>{opp.solicitation}</span>
                 </div>
-                {opp.aiScore != null ? <ScoreBadge score={opp.aiScore} /> : <Badge text="MANUAL" color="#6C757D" />}
+                {opp.aiScore != null
+                  ? <ScoreBadge score={opp.aiScore} />
+                  : opp.live
+                    ? <Badge text="LIVE · SAM.gov" color="#15803D" />
+                    : <Badge text="MANUAL" color="#6C757D" />}
               </div>
 
               {/* Title */}
@@ -184,15 +241,17 @@ export default function Opportunities() {
               {/* Agency */}
               <p style={{ fontSize: '0.68rem', color: '#6C757D' }}>
                 {opp.agency}
-                {opp.sourceUrl && (
-                  <a href={opp.sourceUrl} target="_blank" rel="noreferrer" style={{ color: sourceColor, marginLeft: '6px' }}>
+                {(opp.sourceUrl || opp.samUrl) && (
+                  <a href={opp.sourceUrl || opp.samUrl} target="_blank" rel="noreferrer" style={{ color: sourceColor, marginLeft: '6px' }}>
                     <ExternalLink size={10} style={{ display: 'inline', verticalAlign: '-1px' }} />
                   </a>
                 )}
               </p>
 
               {/* Value */}
-              <p style={{ fontFamily: 'Bebas Neue', fontSize: '1.75rem', color: '#15803D', lineHeight: 1 }}>{fmt(opp.value)}</p>
+              {opp.value
+                ? <p style={{ fontFamily: 'Bebas Neue', fontSize: '1.75rem', color: '#15803D', lineHeight: 1 }}>{fmt(opp.value)}</p>
+                : <p style={{ fontSize: '0.72rem', color: '#ADB5BD', fontStyle: 'italic' }}>Value not disclosed</p>}
 
               {/* Badges row */}
               <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
@@ -208,13 +267,13 @@ export default function Opportunities() {
                   <MapPin size={11} /> {opp.location}
                 </span>
                 <span style={{ fontSize: '0.65rem', color: urgentColor, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Calendar size={11} /> {days > 0 ? `${days}d left` : 'CLOSED'}
+                  <Calendar size={11} /> {days == null ? 'No deadline listed' : days > 0 ? `${days}d left` : 'CLOSED'}
                 </span>
               </div>
 
               {/* Description */}
               <p style={{ fontSize: '0.65rem', color: '#ADB5BD', lineHeight: 1.5 }}>
-                {opp.description.slice(0, 100)}…
+                {opp.description.length > 100 ? opp.description.slice(0, 100) + '…' : opp.description}
               </p>
 
               {/* Stage + Actions */}
@@ -255,7 +314,7 @@ export default function Opportunities() {
               <p>Solicitation No.: {drafting.solicitation}</p>
               <p>Agency: {drafting.agency}</p>
               <p>NAICS: {drafting.naics} — {drafting.naicsTitle}</p>
-              <p>Set-Aside: {drafting.setAside}</p>
+              <p>Set-Aside: {drafting.setAside || 'None listed'}</p>
               <br />
               <p>We are pleased to submit our proposal for {drafting.title}. Our firm brings demonstrated past performance in {drafting.naicsTitle.toLowerCase()} for federal clients, with a proven track record of on-time, within-budget contract delivery.</p>
               <br />

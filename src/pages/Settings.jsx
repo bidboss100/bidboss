@@ -1,9 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Key, Building, Shield, Save, Eye, EyeOff, CheckCircle, Globe } from 'lucide-react'
 import { Card, Btn, Badge, PageHeader } from '../components/UI'
+import { STORAGE_KEYS, loadJSON, saveJSON } from '../lib/storage'
+
+const DEFAULT_NAICS = [
+  '561730', '561720', '812111', '446110', '446199',
+  '561210', '561110', '238910',
+]
 
 export default function Settings() {
-  const [apiKey, setApiKey] = useState('')
+  const [apiKey, setApiKey] = useState(() => loadJSON(STORAGE_KEYS.SAM_API_KEY, ''))
   const [showKey, setShowKey] = useState(false)
   const [saved, setSaved] = useState(false)
 
@@ -11,11 +17,14 @@ export default function Settings() {
     name: '', cage: '', uei: '', duns: '', address: '', phone: '', email: '',
   })
 
-  const [naics, setNaics] = useState([
-    '561730', '561720', '812111', '446110', '446199',
-    '561210', '561110', '238910',
-  ])
+  const [naics, setNaics] = useState(() => loadJSON(STORAGE_KEYS.NAICS_CODES, DEFAULT_NAICS))
   const [newNaics, setNewNaics] = useState('')
+
+  // Persist immediately so the Opportunities page (which reads these
+  // directly from localStorage) always sees the current values, not just
+  // whatever was true the last time "Save All Settings" was clicked.
+  useEffect(() => { saveJSON(STORAGE_KEYS.SAM_API_KEY, apiKey) }, [apiKey])
+  useEffect(() => { saveJSON(STORAGE_KEYS.NAICS_CODES, naics) }, [naics])
 
   const [setAsides, setSetAsides] = useState({
     SB: true, SDVOSB: false, VOSB: false, '8(a)': false, WOSB: false, HUBZone: false,
@@ -50,7 +59,8 @@ export default function Settings() {
       {/* SAM.gov API Key */}
       <Section icon={Key} title="SAM.gov API Key">
         <p style={{ fontSize: '0.68rem', color: '#6C757D', marginBottom: '1rem', lineHeight: 1.6 }}>
-          Enter your SAM.gov API key to enable live opportunity searches. Get a free key at{' '}
+          Enter your SAM.gov API key to pull live opportunities into the Opportunities page (use the{' '}
+          <strong style={{ color: '#6C757D' }}>Sync SAM.gov</strong> button there). Get a free key at{' '}
           <a href="https://open.gsa.gov/api/get-started/" target="_blank" rel="noreferrer" style={{ color: '#B45309' }}>open.gsa.gov</a>.
         </p>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
